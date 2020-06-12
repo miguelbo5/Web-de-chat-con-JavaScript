@@ -24,6 +24,7 @@
 
     <!--Script que registra la aplicacion web en Firebase-->
     <script>
+
         // Your web app's Firebase configuration
         var firebaseConfig = {
           apiKey: "AIzaSyAo1BFQUUjlcr8SfzHIf6XbQhZt8c8CZ7s",
@@ -34,8 +35,11 @@
           messagingSenderId: "390755144940",
           appId: "1:390755144940:web:f608995fd6cf746d8841c9"
         };
+
         // Initialize Firebase
+        
         firebase.initializeApp(firebaseConfig);
+      
       </script>
     
   </head>
@@ -53,6 +57,22 @@
             </div>
 
         </nav>
+
+        <main id="contenidoProtegido">
+
+        </main>
+
+      <form id="formulario">
+
+        <input id="inputChat" type="text" class="form-control" placeholder="Escribe tu mensaje">
+
+        <div class="input-group-append">
+
+          <button type="submit" class="btn btn-primary">Enviar</button>
+
+        </div>
+
+      </form>
 
     </div>
 

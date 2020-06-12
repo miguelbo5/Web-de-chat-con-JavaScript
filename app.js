@@ -1,7 +1,14 @@
+//Div de botones inicio de sesion y cerrar sesion
 const botones = document.querySelector('#botones')
 
+//Nombre de usuario
 const nombreUsuario = document.querySelector('#nombreUsuario')
 
+const contenidoProtegido = document.querySelector('#contenidoProtegido')
+
+const formulario = document.querySelector('#formulario')
+
+const inputChat = document.querySelector('#inputChat')
 
 firebase.auth().onAuthStateChanged(user => {
 
@@ -15,18 +22,58 @@ firebase.auth().onAuthStateChanged(user => {
 
         cerrarSesion()
 
+        formulario.classList = 'input-group py-2 fixed-bottom container'
+
+        contenidoChat(user)
+
     }else{
-        console.log('No existe el usuario.')
+        
         botones.innerHTML = /*html*/`<button id='btnAcceder' class="btn btn-outline-success mr-2">Acceder</button>`
 
         nombreUsuario.innerHTML = 'Chat'
         
         iniciarSesion()
+
+        contenidoProtegido.innerHTML = /*html*/`<p class="text-center lead mt-2">Tienes que iniciar sesión</p>`
+
+        formulario.classList = 'input-group py-2 fixed-bottom container d-none'
+
     }
 
-    
-
 })
+
+const contenidoChat = (user) => {
+
+    contenidoProtegido.innerHTML = /*html*/`<p class="text-center lead mt-2">Bienvenido de nuevo, ${user.email}</p>`
+
+    formulario.addEventListener('submit', (e) => {
+
+        e.preventDefault()
+
+        if(!inputChat.value.trim()){
+
+            console.log('input vacio')
+
+            return
+
+        }
+
+        firebase.firestore().collection('chat').add({
+
+            texto: inputChat.value, 
+            uid: user.uid,
+            fecha: Date.now()
+
+        })
+        .then(res => {console.log("Mensaje guardado en la base de datos")})
+        .catch(e => console.log(e))
+
+    inputChat.value = ''
+        
+
+    })
+
+}
 
 const cerrarSesion = () =>{
 
