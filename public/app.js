@@ -44,7 +44,7 @@ firebase.auth().onAuthStateChanged(user => {
 
 const contenidoChat = (user) => {
 
-    contenidoProtegido.innerHTML = /*html*/`<p class="text-center lead mt-2">Bienvenido de nuevo, ${user.email}</p>`
+    //contenidoProtegido.innerHTML = /*html*/`<p class="text-center lead mt-2">Bienvenido de nuevo, ${user.email}</p>`
 
     formulario.addEventListener('submit', (e) => {
 
@@ -70,8 +70,41 @@ const contenidoChat = (user) => {
 
     inputChat.value = ''
         
+    })
+
+
+    firebase.firestore().collection('chat').orderBy('fecha').onSnapshot(query =>{
+
+        //console.log(query)
+
+        contenidoProtegido.innerHTML = ''
+
+        query.forEach(doc => {
+
+            //console.log(doc.data())
+
+            if(doc.data().uid === user.uid){
+
+                contenidoProtegido.innerHTML +=
+                /*html*/`<div class="d-flex justify-content-end">
+                    <span class="badge badge-primary p-2 mt-1">${doc.data().texto}</span>
+                </div>`
+
+            }else{
+
+                contenidoProtegido.innerHTML += 
+                /*html*/`<div class="d-flex justify-content-start">
+                    <span class="badge badge-secondary p-2 mt-1">${doc.data().texto}</span>
+                </div>`
+
+            }
+
+            contenidoProtegido.scrollTop = contenidoProtegido.scrollHeight
+
+        })
 
     })
+
 
 }
 
